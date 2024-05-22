@@ -14,35 +14,35 @@ function colorModeToggle() {
   let toggleEl;
   let togglePressed = "false";
 
-  const scriptTag = document.querySelector("[tr-color-vars]");
+  const scriptTag = document.querySelector("[color-vars]");
   if (!scriptTag) {
-    console.warn("Script tag with tr-color-vars attribute not found");
+    console.warn("Script tag with color-vars attribute not found");
     return;
   }
 
   let colorModeDuration = attr(0.5, scriptTag.getAttribute("duration"));
   let colorModeEase = attr("power1.out", scriptTag.getAttribute("ease"));
 
-  const cssVariables = scriptTag.getAttribute("tr-color-vars");
+  const cssVariables = scriptTag.getAttribute("color-vars");
   if (!cssVariables.length) {
-    console.warn("Value of tr-color-vars attribute not found");
+    console.warn("Value of color-vars attribute not found");
     return;
   }
 
   let lightColors = {};
   let darkColors = {};
   cssVariables.split(",").forEach(function (item) {
-    let lightValue = computed.getPropertyValue(`--color--${item}`);
-    let darkValue = computed.getPropertyValue(`--dark--${item}`);
+    let lightValue = computed.getPropertyValue(`--light-mode--${item}`);
+    let darkValue = computed.getPropertyValue(`--dark-mode--${item}`);
     if (lightValue.length) {
       if (!darkValue.length) darkValue = lightValue;
-      lightColors[`--color--${item}`] = lightValue;
-      darkColors[`--color--${item}`] = darkValue;
+      lightColors[`--light-mode--${item}`] = lightValue;
+      darkColors[`--light-mode--${item}`] = darkValue;
     }
   });
 
   if (!Object.keys(lightColors).length) {
-    console.warn("No variables found matching tr-color-vars attribute value");
+    console.warn("No variables found matching color-vars attribute value");
     return;
   }
 
@@ -51,7 +51,7 @@ function colorModeToggle() {
       gsap.to(htmlElement, {
         ...colorObject,
         duration: colorModeDuration,
-        ease: colorModeEase
+        ease: colorModeEase,
       });
     } else {
       Object.keys(colorObject).forEach(function (key) {
@@ -95,7 +95,7 @@ function colorModeToggle() {
   }
 
   window.addEventListener("DOMContentLoaded", (event) => {
-    toggleEl = document.querySelectorAll("[tr-color-toggle]");
+    toggleEl = document.querySelectorAll("[color-toggle]");
     toggleEl.forEach(function (element) {
       element.setAttribute("aria-label", "View Dark Mode");
       element.setAttribute("role", "button");
