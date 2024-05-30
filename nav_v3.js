@@ -1,3 +1,5 @@
+console.log("running v3.3")
+
 // --- Navigation --- //
 
 // - stop scroll on mobile
@@ -51,6 +53,11 @@ function revealDropdown(currentLink, currentContent) {
     console.log('currentContent:', currentContent);
 
     dropdownWrap.css("display", "flex");
+
+    console.log('menuArrow:', menuArrow);
+    console.log('menuBG:', menuBG);
+    console.log('content:', content);
+
     gsap.set(menuArrow, {
       width: "100%",
       x: currentLink.offset().left
@@ -86,13 +93,13 @@ function switchDropdown(currentLink, previousContent, currentContent) {
       width: currentContent.outerWidth(),
       height: currentContent.outerHeight() + 64 + "px"
     });
-    
+
     // invert moveDistance if needed
     let moveDistance = 10;
     if (currentContent.index() < previousContent.index()) {
       moveDistance = moveDistance * -1;
     }
-    
+
     gsap.fromTo(
       previousContent,
       { opacity: 1, x: "0em" },
@@ -132,18 +139,18 @@ showDropdown
 menuLink.on("mouseenter", function () {
   try {
     console.log('menuLink mouseenter');
-    
+
     // get elements
     let previousLink = menuLink.filter(".active").removeClass("active");
     let currentLink = $(this).addClass("active");
     let previousContent = content.filter(".active").removeClass("active");
     let currentContent = content.eq($(this).index()).addClass("active");
-    
+
     console.log('previousLink:', previousLink);
     console.log('currentLink:', currentLink);
     console.log('previousContent:', previousContent);
     console.log('currentContent:', currentContent);
-    
+
     // play animations
     showDropdown.play();
     if (previousLink.length === 0) {
