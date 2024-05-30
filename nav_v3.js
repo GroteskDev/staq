@@ -45,22 +45,30 @@ gsap.defaults({
 });
 
 function revealDropdown(currentLink, currentContent) {
-  dropdownWrap.css("display", "flex");
-  gsap.set(menuArrow, {
-    width: "100%",
-    x: currentLink.offset().left
-  });
-  gsap.set(menuBG, {
-    width: "100%",
-    height: currentContent.outerHeight() + 64 + "px"
-  });
-  gsap.set(content, {
-    opacity: 0
-  });
-  gsap.set(currentContent, {
-    opacity: 1,
-    x: "0em"
-  });
+  try {
+    console.log('revealDropdown called');
+    console.log('currentLink:', currentLink);
+    console.log('currentContent:', currentContent);
+
+    dropdownWrap.css("display", "flex");
+    gsap.set(menuArrow, {
+      width: "100%",
+      x: currentLink.offset().left
+    });
+    gsap.set(menuBG, {
+      width: "100%",
+      height: currentContent.outerHeight() + 64 + "px"
+    });
+    gsap.set(content, {
+      opacity: 0
+    });
+    gsap.set(currentContent, {
+      opacity: 1,
+      x: "0em"
+    });
+  } catch (e) {
+    console.error('Error in revealDropdown:', e);
+  }
 }
 
 function switchDropdown(currentLink, previousContent, currentContent) {
@@ -122,37 +130,45 @@ showDropdown
 
 // Link Hover In
 menuLink.on("mouseenter", function () {
-  console.log('menuLink mouseenter');
-  
-  // get elements
-  let previousLink = menuLink.filter(".active").removeClass("active");
-  let currentLink = $(this).addClass("active");
-  let previousContent = content.filter(".active").removeClass("active");
-  let currentContent = content.eq($(this).index()).addClass("active");
-  
-  console.log('previousLink:', previousLink);
-  console.log('currentLink:', currentLink);
-  console.log('previousContent:', previousContent);
-  console.log('currentContent:', currentContent);
-  
-  // play animations
-  showDropdown.play();
-  if (previousLink.length === 0) {
-    revealDropdown(currentLink, currentContent);
-  } else if (previousLink.index() !== currentLink.index()) {
-    setTimeout(function () {
-      switchDropdown(currentLink, previousContent, currentContent);
-    }, 100);
+  try {
+    console.log('menuLink mouseenter');
+    
+    // get elements
+    let previousLink = menuLink.filter(".active").removeClass("active");
+    let currentLink = $(this).addClass("active");
+    let previousContent = content.filter(".active").removeClass("active");
+    let currentContent = content.eq($(this).index()).addClass("active");
+    
+    console.log('previousLink:', previousLink);
+    console.log('currentLink:', currentLink);
+    console.log('previousContent:', previousContent);
+    console.log('currentContent:', currentContent);
+    
+    // play animations
+    showDropdown.play();
+    if (previousLink.length === 0) {
+      revealDropdown(currentLink, currentContent);
+    } else if (previousLink.index() !== currentLink.index()) {
+      setTimeout(function () {
+        switchDropdown(currentLink, previousContent, currentContent);
+      }, 100);
+    }
+  } catch (e) {
+    console.error('Error in menuLink mouseenter:', e);
   }
 });
 
 // Menu Hover Out
 $(".menu-v2").on("mouseleave", function (event) {
-  const target = event.relatedTarget;
-  if (!$(target).is(".menu_dp-wrap-v2, .menu_content-v2")) {
-    // The cursor left both elements, perform the animation
-    setTimeout(function () {
-      showDropdown.reverse();
-    }, 100); // Delay in milliseconds
+  try {
+    const target = event.relatedTarget;
+    if (!$(target).is(".menu_dp-wrap-v2, .menu_content-v2")) {
+      // The cursor left both elements, perform the animation
+      setTimeout(function () {
+        showDropdown.reverse();
+      }, 100); // Delay in milliseconds
+    }
+  } catch (e) {
+    console.error('Error in menu-v2 mouseleave:', e);
   }
 });
